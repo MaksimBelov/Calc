@@ -1,0 +1,170 @@
+﻿<Window x:Class="Calc.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Calc"
+        mc:Ignorable="d"
+        Title="Калькулятор" Height="600" Width="500" MinHeight="450" MinWidth="400" KeyDown="Window_KeyDown">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="Copy" Executed="Copy_Executed"/>
+    </Window.CommandBindings>
+
+
+    <Window.Resources>
+        <Style TargetType="Menu">
+            <Setter Property="Background" Value="DarkGray"/>
+        </Style>
+
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="DarkGray"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ButtonStyle">
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border CornerRadius="10"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    Background="{TemplateBinding Background}"/>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              TextElement.FontWeight="{TemplateBinding FontWeight}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"
+                                              TextElement.FontSize="{TemplateBinding FontSize}"
+                                              TextElement.FontFamily="{TemplateBinding FontFamily}">
+                            </ContentPresenter>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderThickness"  Value="1"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Margin" Value="5"/>
+                                <Setter Property="FontWeight" Value="ExtraBold"/>
+                                <Setter Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <EventSetter Event="Click" Handler="Button_Click"/>
+        </Style>
+
+        <Style x:Key="NumberButtonStyle"
+               BasedOn="{StaticResource ButtonStyle}"
+               TargetType="Button"               >
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <Style x:Key="OperatonButtonStyle"
+               BasedOn="{StaticResource ButtonStyle}"
+               TargetType="Button" >
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Background" Value="Orange"/>
+        </Style>
+
+        <Style x:Key="ExtraOperatonButtonStyle"
+               BasedOn="{StaticResource ButtonStyle}"
+               TargetType="Button" >
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Background" Value="Wheat"/>
+        </Style>
+
+        <Style x:Key="EditButtonStyle"
+               BasedOn="{StaticResource ButtonStyle}"
+               TargetType="Button" >
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Background" Value="LightGray"/>
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border BorderThickness="0"
+                Margin="5"
+                Grid.Row="0"
+                CornerRadius="10"/>
+        <StackPanel>
+            <TextBlock x:Name="expressionTxt"
+                       Margin="15 15 15 0"
+                       Padding="2"
+                       Foreground="Gray"
+                       FontSize="20"
+                       TextAlignment="Right"/>
+            <TextBlock x:Name="resultTxt"
+                       Text="0"
+                       Margin="15 0 15 15"
+                       Padding="2"
+                       FontSize="40"
+                       TextAlignment="Right">
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy">
+                            <MenuItem.CommandBindings>
+                                <CommandBinding Command="Copy" Executed="Copy_Executed"/>
+                            </MenuItem.CommandBindings>
+                        </MenuItem>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
+        </StackPanel>
+        <UniformGrid Rows="6" Columns="4" Grid.Row="1" Margin="5">
+            <Button Content="%" Style="{StaticResource ExtraOperatonButtonStyle}"/>
+            <Button Content="CE" Style="{StaticResource EditButtonStyle}"/>
+            <Button Content="C" Style="{StaticResource EditButtonStyle}"/>
+            <Button Content="←" Style="{StaticResource EditButtonStyle}"/>
+            <Button Content="1/x" Style="{StaticResource ExtraOperatonButtonStyle}"/>
+            <Button Content="x²" Style="{StaticResource ExtraOperatonButtonStyle}"/>
+            <Button Content="√x" Style="{StaticResource ExtraOperatonButtonStyle}"/>
+            <Button Content="+/-" Style="{StaticResource ExtraOperatonButtonStyle}"/>
+            <Button Content="7" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="8" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="9" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="+" Style="{StaticResource OperatonButtonStyle}"/>
+            <Button Content="4" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="5" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="6" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="-" Style="{StaticResource OperatonButtonStyle}"/>
+            <Button Content="1" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="2" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="3" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="*" Style="{StaticResource OperatonButtonStyle}"/>
+            <Button Content="," Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="0" Style="{StaticResource NumberButtonStyle}"/>
+            <Button Content="=" Style="{StaticResource OperatonButtonStyle}"/>
+            <Button Content="/" Style="{StaticResource OperatonButtonStyle}"/>
+        </UniformGrid>
+    </Grid>
+</Window>
